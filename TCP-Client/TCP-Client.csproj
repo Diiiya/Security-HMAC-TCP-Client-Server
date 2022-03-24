@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Helper\Helper.csproj" />
+    <Reference Include="Helper">
+      <HintPath>..\Helper\bin\Debug\net5.0\Helper.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -11,9 +11,9 @@ namespace TCP_Client
 {
     public class Client
     {
-        private static byte[] SignMessage(string text)
+        private static byte[] SignMessage(string text, Guid nonce)
         {
-            string key = "V3rY!$ecR3TXmaC#k33Y";
+            string key = "V3rY!$ecR3TXmaC#k33Y" + nonce;
             byte[] keyBytes = Encoding.ASCII.GetBytes(key);
             using HMACSHA256 hmac = new HMACSHA256(keyBytes);
             byte[] bytes = Encoding.ASCII.GetBytes(text);
@@ -22,9 +22,13 @@ namespace TCP_Client
         }
         private static void SerializeMessage(NetworkStream stream, string inputText)
         {
+            var nonce = Guid.NewGuid();
+            // To test Replay attack check works, new Guid() always outputs 000-00.. 
+            // var nonce = new Guid();
             Message msg = new()
             {
-                Hash = SignMessage(inputText),
+                Nonce = nonce,
+                Hash = SignMessage(inputText, nonce),
                 Text = inputText
             };
 
